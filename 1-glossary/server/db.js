@@ -4,7 +4,7 @@ mongoose.connect('mongodb://localhost:27017/glossary', {useNewUrlParser: true, u
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
-  // we're connected!
+  console.log('we are connected!');
 });
 
 let wordSchema = new mongoose.Schema({
@@ -15,12 +15,18 @@ let wordSchema = new mongoose.Schema({
 let Entry = mongoose.model('Entry', wordSchema);
 
 let save = (entry) => {
-  let newEntry = new Entry({
+  return new Entry({
     word: entry.word,
-    definition: entry.definitioin
+    definition: entry.definition
   }).save()
 }
+
+let getAll = () => {
+  return Entry.find({}).exec()
+}
+
 module.exports.save = save;
+module.exports.getAll= getAll;
 
 // 1. Use mongoose to establish a connection to MongoDB
 // 2. Set up any schema and models needed by the app
