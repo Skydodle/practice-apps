@@ -25,8 +25,13 @@ let getAll = () => {
   return Entry.find({}).exec()
 }
 
+let getOne = (query) => {
+  return Entry.findOne(query, 'word definition').exec();
+}
+
 module.exports.save = save;
-module.exports.getAll= getAll;
+module.exports.getAll = getAll;
+module.exports.getOne = getOne;
 
 // 1. Use mongoose to establish a connection to MongoDB
 // 2. Set up any schema and models needed by the app

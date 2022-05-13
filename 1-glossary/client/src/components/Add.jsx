@@ -3,7 +3,7 @@ import React from 'react';
 const Add = ({word, definition, handleInput, addEntry}) => {
   return(
     <div>
-      <h4>ADD MORE WORDS</h4>
+      <h5>ADD MORE WORDS</h5>
       <form>
         <label>
           Word

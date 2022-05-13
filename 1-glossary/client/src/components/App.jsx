@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import Add from './Add.jsx';
-// import Search from './Search.jsx';
-// import EntryList from './EntryList.jsx';
+import Search from './Search.jsx';
+import EntryList from './EntryList.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -25,9 +25,9 @@ class App extends React.Component {
   }
 
   // get all entries method
-  get() {
     // should get request to server for all entries from db
     // udpate state with data
+  get() {
     axios.get('/entries')
       .then(res => {
         var entriesData = res.data;
@@ -38,6 +38,10 @@ class App extends React.Component {
       .catch((err) => {
         console.log(err);
       })
+  }
+
+  componentDidMount(){
+    this.get();
   }
 
   // add entry method
@@ -55,21 +59,53 @@ class App extends React.Component {
       })
   }
 
+  search (term) {
+    // let query = {word: term};
+    axios.get('/entries/:word', {params: {word: term}})
+      .then(res => {
+        var result = [];
+        result.push(res.data);
+        console.log('search data:', res.data);
+        this.setState({
+          entries: result
+        })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  deleteEntry() {
+    axios.delete('/entries', input)
+      .then(res => {
+        this.get();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
   render() {
     return (
       <div>
       <h1>Glossary App</h1>
       <main>
-        <Add className="add-entry"
+        <Add
           word={this.state.word}
           definition={this.state.definition}
           handleInput={this.handleInput.bind(this)}
           addEntry={this.addEntry.bind(this)}
         />
-        {/* <Search
+        <Search
+          onSearch={this.search.bind(this)}
         />
         <EntryList
-        /> */}
+          entries={this.state.entries}
+          // word={this.state.word}
+          // definition={this.state.definition}
+          // handleInput={this.handleInput.bind(this)}
+          // addEntry={this.addEntry.bind(this)}
+        />
       </main>
       </div>
     )
